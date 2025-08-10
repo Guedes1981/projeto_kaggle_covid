@@ -32,5 +32,5 @@ Pipeline SQL (PostgreSQL/pgAdmin) aplicado ao dataset COVID-19 do Kaggle, com ta
 ## 📚 Créditos
 - Dados: Kaggle — COVID-19 Data.
 - Autor: Murilo Guedes.
-- Licença do código: MIT (ajuste conforme preferir).
+- Licença do código: MIT.
 
