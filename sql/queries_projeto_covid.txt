@@ -1,0 +1,1246 @@
+SELECT to_regclass('raw.country_wise_latest_stg') AS existe;
+SELECT COUNT(*) FROM raw.country_wise_latest_stg;
+SELECT * FROM raw.country_wise_latest_stg LIMIT 5;
+-- 1) Esvazia a tabela final (segurança para não duplicar)
+TRUNCATE raw.country_wise_latest;
+
+-- 2) Insere convertendo tipos com segurança
+INSERT INTO raw.country_wise_latest (
+  country_region,
+  confirmed,
+  deaths,
+  recovered,
+  active,
+  new_cases,
+  new_deaths,
+  new_recovered,
+  deaths_per_100_cases,
+  recovered_per_100_cases,
+  deaths_per_100_recovered,
+  confirmed_last_week,
+  one_week_change,
+  one_week_percent_increase,
+  who_region
+)
+SELECT
+  country_region,
+  NULLIF(confirmed, '')::NUMERIC,
+  NULLIF(deaths, '')::NUMERIC,
+  NULLIF(recovered, '')::NUMERIC,
+  NULLIF(active, '')::NUMERIC,
+  NULLIF(new_cases, '')::NUMERIC,
+  NULLIF(new_deaths, '')::NUMERIC,
+  NULLIF(new_recovered, '')::NUMERIC,
+  NULLIF(deaths_per_100_cases, '')::NUMERIC,
+  NULLIF(recovered_per_100_cases, '')::NUMERIC,
+  NULLIF(deaths_per_100_recovered, '')::NUMERIC,
+  NULLIF(confirmed_last_week, '')::NUMERIC,
+  NULLIF(one_week_change, '')::NUMERIC,
+  NULLIF(one_week_percent_increase, '')::NUMERIC,
+  who_region
+FROM raw.country_wise_latest_stg;
+-- Deve retornar 187 (mesmo total da staging)
+SELECT COUNT(*) FROM raw.country_wise_latest;
+
+-- Amostra
+SELECT * FROM raw.country_wise_latest LIMIT 5;
+CREATE TABLE IF NOT EXISTS raw.covid_19_clean_complete_stg (
+  province_state TEXT,
+  country_region TEXT,
+  lat TEXT,
+  long TEXT,
+  date TEXT,
+  confirmed TEXT,
+  deaths TEXT,
+  recovered TEXT,
+  active TEXT,
+  who_region TEXT
+);
+SELECT COUNT(*) FROM raw.covid_19_clean_complete_stg;
+SELECT * FROM raw.covid_19_clean_complete_stg LIMIT 5;
+-- 1) Esvaziar a final
+TRUNCATE raw.covid_19_clean_complete;
+
+-- 2) Inserir convertendo tipos com segurança
+INSERT INTO raw.covid_19_clean_complete (
+  province_state,
+  country_region,
+  lat,
+  long,
+  date,
+  confirmed,
+  deaths,
+  recovered,
+  active,
+  who_region
+)
+SELECT
+  province_state,
+  country_region,
+  NULLIF(lat,'')::NUMERIC,
+  NULLIF(long,'')::NUMERIC,
+  NULLIF(date,'')::DATE,
+  NULLIF(confirmed,'')::NUMERIC,
+  NULLIF(deaths,'')::NUMERIC,
+  NULLIF(recovered,'')::NUMERIC,
+  NULLIF(active,'')::NUMERIC,
+  who_region
+FROM raw.covid_19_clean_complete_stg;
+SELECT COUNT(*) FROM raw.covid_19_clean_complete; 
+SELECT MIN(date), MAX(date) FROM raw.covid_19_clean_complete;
+SELECT * FROM raw.covid_19_clean_complete LIMIT 5;
+CREATE TABLE IF NOT EXISTS raw.day_wise_stg (
+  date TEXT,
+  confirmed TEXT,
+  deaths TEXT,
+  recovered TEXT,
+  active TEXT,
+  new_cases TEXT,
+  new_deaths TEXT,
+  new_recovered TEXT,
+  deaths_per_100_cases TEXT,
+  recovered_per_100_cases TEXT,
+  deaths_per_100_recovered TEXT,
+  num_of_countries TEXT
+);
+SELECT COUNT(*) FROM raw.day_wise_stg;
+SELECT * FROM raw.day_wise_stg LIMIT 5;
+-- 1) Esvazia a final (evita duplicidade)
+TRUNCATE raw.day_wise;
+
+-- 2) Insere convertendo tipos com segurança
+INSERT INTO raw.day_wise (
+  date,
+  confirmed,
+  deaths,
+  recovered,
+  active,
+  new_cases,
+  new_deaths,
+  new_recovered,
+  deaths_per_100_cases,
+  recovered_per_100_cases,
+  deaths_per_100_recovered,
+  num_of_countries
+)
+SELECT
+  NULLIF(date,'')::DATE,
+  NULLIF(confirmed,'')::NUMERIC,
+  NULLIF(deaths,'')::NUMERIC,
+  NULLIF(recovered,'')::NUMERIC,
+  NULLIF(active,'')::NUMERIC,
+  NULLIF(new_cases,'')::NUMERIC,
+  NULLIF(new_deaths,'')::NUMERIC,
+  NULLIF(new_recovered,'')::NUMERIC,
+  NULLIF(deaths_per_100_cases,'')::NUMERIC,
+  NULLIF(recovered_per_100_cases,'')::NUMERIC,
+  NULLIF(deaths_per_100_recovered,'')::NUMERIC,
+  NULLIF(num_of_countries,'')::NUMERIC
+FROM raw.day_wise_stg;
+SELECT COUNT(*) FROM raw.day_wise;
+SELECT MIN(date), MAX(date) FROM raw.day_wise;
+SELECT * FROM raw.day_wise LIMIT 5;
+
+CREATE TABLE IF NOT EXISTS raw.full_grouped_stg (
+  date TEXT,
+  country_region TEXT,
+  confirmed TEXT,
+  deaths TEXT,
+  recovered TEXT,
+  active TEXT,
+  new_cases TEXT,
+  new_deaths TEXT,
+  new_recovered TEXT,
+  who_region TEXT
+);
+
+SELECT COUNT(*) FROM raw.full_grouped_stg;
+SELECT * FROM raw.full_grouped_stg LIMIT 5;
+
+-- 1) Esvazia a final (evita duplicidade)
+TRUNCATE raw.full_grouped;
+
+-- 2) Insere convertendo tipos com segurança
+INSERT INTO raw.full_grouped (
+  date,
+  country_region,
+  confirmed,
+  deaths,
+  recovered,
+  active,
+  new_cases,
+  new_deaths,
+  new_recovered,
+  who_region
+)
+SELECT
+  NULLIF(date,'')::DATE,
+  country_region,
+  NULLIF(confirmed,'')::NUMERIC,
+  NULLIF(deaths,'')::NUMERIC,
+  NULLIF(recovered,'')::NUMERIC,
+  NULLIF(active,'')::NUMERIC,
+  NULLIF(new_cases,'')::NUMERIC,
+  NULLIF(new_deaths,'')::NUMERIC,
+  NULLIF(new_recovered,'')::NUMERIC,
+  who_region
+FROM raw.full_grouped_stg;
+
+SELECT COUNT(*) FROM raw.full_grouped;        -- deve voltar 35156
+SELECT MIN(date), MAX(date) FROM raw.full_grouped;
+SELECT * FROM raw.full_grouped LIMIT 5;
+
+SELECT date, SUM(confirmed) AS total_confirmed
+FROM raw.full_grouped
+GROUP BY date
+ORDER BY date
+LIMIT 10;
+
+SELECT country_region, MIN(date) AS first_case_date
+FROM raw.full_grouped
+WHERE confirmed > 0
+GROUP BY country_region
+ORDER BY first_case_date;
+
+SELECT date, confirmed, new_cases, deaths
+FROM raw.full_grouped
+WHERE country_region = 'Brazil'
+ORDER BY date
+LIMIT 100;
+
+CREATE TABLE IF NOT EXISTS raw.usa_county_wise_stg (
+  uid TEXT,
+  iso2 TEXT,
+  iso3 TEXT,
+  code3 TEXT,
+  fips TEXT,
+  admin2 TEXT,
+  province_state TEXT,
+  country_region TEXT,
+  lat TEXT,
+  long_ TEXT,
+  combined_key TEXT,
+  date TEXT,
+  confirmed TEXT,
+  deaths TEXT
+);
+
+SELECT COUNT(*) FROM raw.usa_county_wise_stg;
+SELECT * FROM raw.usa_county_wise_stg LIMIT 5;
+
+-- 1) Esvazia a final (evita duplicidade)
+TRUNCATE raw.usa_county_wise;
+
+-- 2) Insere convertendo tipos com segurança
+INSERT INTO raw.usa_county_wise (
+  uid,
+  iso2,
+  iso3,
+  code3,
+  fips,
+  admin2,
+  province_state,
+  country_region,
+  lat,
+  long_,
+  combined_key,
+  date,
+  confirmed,
+  deaths
+)
+SELECT
+  NULLIF(uid,'')::NUMERIC,
+  iso2,
+  iso3,
+  NULLIF(code3,'')::NUMERIC,
+  NULLIF(fips,'')::NUMERIC,
+  admin2,
+  province_state,
+  country_region,
+  NULLIF(lat,'')::NUMERIC,
+  NULLIF(long_,'')::NUMERIC,
+  combined_key,
+  NULLIF(date,'')::DATE,
+  NULLIF(confirmed,'')::NUMERIC,
+  NULLIF(deaths,'')::NUMERIC
+FROM raw.usa_county_wise_stg;
+
+TRUNCATE raw.usa_county_wise;
+
+INSERT INTO raw.usa_county_wise (
+  uid,
+  iso2,
+  iso3,
+  code3,
+  fips,
+  admin2,
+  province_state,
+  country_region,
+  lat,
+  long_,
+  combined_key,
+  date,
+  confirmed,
+  deaths
+)
+SELECT
+  NULLIF(uid,'')::NUMERIC,
+  iso2,
+  iso3,
+  NULLIF(code3,'')::NUMERIC,
+  NULLIF(fips,'')::NUMERIC,
+  admin2,
+  province_state,
+  country_region,
+  NULLIF(lat,'')::NUMERIC,
+  NULLIF(long_,'')::NUMERIC,
+  combined_key,
+  CASE 
+    WHEN NULLIF(date,'') IS NULL THEN NULL
+    ELSE to_date(date, 'FMMM/FMDD/YY')
+  END,
+  NULLIF(confirmed,'')::NUMERIC,
+  NULLIF(deaths,'')::NUMERIC
+FROM raw.usa_county_wise_stg;
+
+SELECT COUNT(*) FROM raw.usa_county_wise;
+SELECT MIN(date), MAX(date) FROM raw.usa_county_wise;
+SELECT * FROM raw.usa_county_wise LIMIT 5;
+
+CREATE TABLE IF NOT EXISTS raw.worldometer_data_stg (
+  country_region TEXT,
+  continent TEXT,
+  population TEXT,
+  total_cases TEXT,
+  new_cases TEXT,
+  total_deaths TEXT,
+  new_deaths TEXT,
+  total_recovered TEXT,
+  new_recovered TEXT,
+  active_cases TEXT,
+  serious_critical TEXT,          -- no CSV vem "Serious,Critical"; aqui damos um nome seguro
+  total_cases_per_1m_pop TEXT,    -- no CSV vem "Tot Cases/1M pop"
+  deaths_per_1m_pop TEXT,         -- no CSV vem "Deaths/1M pop"
+  total_tests TEXT,
+  tests_per_1m_pop TEXT,          -- no CSV vem "Tests/1M pop"
+  who_region TEXT
+);
+
+SELECT COUNT(*) FROM raw.worldometer_data_stg;
+SELECT * FROM raw.worldometer_data_stg LIMIT 5;
+
+TRUNCATE raw.worldometer_data;
+
+INSERT INTO raw.worldometer_data (
+  country_region,
+  continent,
+  population,
+  total_cases,
+  new_cases,
+  total_deaths,
+  new_deaths,
+  total_recovered,
+  new_recovered,
+  active_cases,
+  serious_critical,
+  total_cases_per_1m_pop,
+  deaths_per_1m_pop,
+  total_tests,
+  tests_per_1m_pop,
+  who_region
+)
+SELECT
+  country_region,
+  continent,
+  CASE WHEN population IN ('', 'N/A') THEN NULL ELSE REPLACE(population, ',', '')::NUMERIC END,
+  CASE WHEN total_cases IN ('', 'N/A') THEN NULL ELSE REPLACE(total_cases, ',', '')::NUMERIC END,
+  CASE WHEN new_cases IN ('', 'N/A') THEN NULL ELSE REPLACE(new_cases, ',', '')::NUMERIC END,
+  CASE WHEN total_deaths IN ('', 'N/A') THEN NULL ELSE REPLACE(total_deaths, ',', '')::NUMERIC END,
+  CASE WHEN new_deaths IN ('', 'N/A') THEN NULL ELSE REPLACE(new_deaths, ',', '')::NUMERIC END,
+  CASE WHEN total_recovered IN ('', 'N/A') THEN NULL ELSE REPLACE(total_recovered, ',', '')::NUMERIC END,
+  CASE WHEN new_recovered IN ('', 'N/A') THEN NULL ELSE REPLACE(new_recovered, ',', '')::NUMERIC END,
+  CASE WHEN active_cases IN ('', 'N/A') THEN NULL ELSE REPLACE(active_cases, ',', '')::NUMERIC END,
+  CASE WHEN serious_critical IN ('', 'N/A') THEN NULL ELSE REPLACE(serious_critical, ',', '')::NUMERIC END,
+  CASE WHEN total_cases_per_1m_pop IN ('', 'N/A') THEN NULL ELSE REPLACE(total_cases_per_1m_pop, ',', '')::NUMERIC END,
+  CASE WHEN deaths_per_1m_pop IN ('', 'N/A') THEN NULL ELSE REPLACE(deaths_per_1m_pop, ',', '')::NUMERIC END,
+  CASE WHEN total_tests IN ('', 'N/A') THEN NULL ELSE REPLACE(total_tests, ',', '')::NUMERIC END,
+  CASE WHEN tests_per_1m_pop IN ('', 'N/A') THEN NULL ELSE REPLACE(tests_per_1m_pop, ',', '')::NUMERIC END,
+  who_region
+FROM raw.worldometer_data_stg;
+
+SELECT COUNT(*) FROM raw.worldometer_data;
+SELECT * FROM raw.worldometer_data LIMIT 5;
+
+-- Linhas por tabela final
+SELECT 'country_wise_latest' tbl, COUNT(*) FROM raw.country_wise_latest
+UNION ALL SELECT 'covid_19_clean_complete', COUNT(*) FROM raw.covid_19_clean_complete
+UNION ALL SELECT 'day_wise', COUNT(*) FROM raw.day_wise
+UNION ALL SELECT 'full_grouped', COUNT(*) FROM raw.full_grouped
+UNION ALL SELECT 'usa_county_wise', COUNT(*) FROM raw.usa_county_wise
+UNION ALL SELECT 'worldometer_data', COUNT(*) FROM raw.worldometer_data;
+
+-- Intervalo de datas nas tabelas que têm date
+SELECT 'covid_19_clean_complete' tbl, MIN(date) min_date, MAX(date) max_date FROM raw.covid_19_clean_complete
+UNION ALL SELECT 'day_wise', MIN(date), MAX(date) FROM raw.day_wise
+UNION ALL SELECT 'full_grouped', MIN(date), MAX(date) FROM raw.full_grouped
+UNION ALL SELECT 'usa_county_wise', MIN(date), MAX(date) FROM raw.usa_county_wise;
+
+-- Possíveis chaves lógicas por tabela:
+-- full_grouped: (country_region, date)
+SELECT COUNT(*) AS total,
+       COUNT(DISTINCT country_region || '|' || date) AS distintos
+FROM raw.full_grouped;
+
+-- covid_19_clean_complete: (country_region, province_state, date)
+SELECT COUNT(*) AS total,
+       COUNT(DISTINCT COALESCE(country_region,'') || '|' || COALESCE(province_state,'') || '|' || date) AS distintos
+FROM raw.covid_19_clean_complete;
+
+-- usa_county_wise: (combined_key, date)
+SELECT COUNT(*) AS total,
+       COUNT(DISTINCT combined_key || '|' || date) AS distintos
+FROM raw.usa_county_wise;
+
+SELECT country_region, date, COUNT(*) AS qtd
+FROM raw.full_grouped
+GROUP BY country_region, date
+HAVING COUNT(*) > 1
+ORDER BY qtd DESC, country_region, date;
+
+SELECT country_region, province_state, date, COUNT(*) AS qtd
+FROM raw.covid_19_clean_complete
+GROUP BY country_region, province_state, date
+HAVING COUNT(*) > 1
+ORDER BY qtd DESC, country_region, province_state, date;
+
+SELECT combined_key, date, COUNT(*) AS qtd
+FROM raw.usa_county_wise
+GROUP BY combined_key, date
+HAVING COUNT(*) > 1
+ORDER BY qtd DESC, combined_key, date;
+
+-- Países que aparecem no histórico e NÃO existem no worldometer_data
+SELECT DISTINCT fg.country_region
+FROM raw.full_grouped fg
+LEFT JOIN raw.worldometer_data w
+  ON w.country_region = fg.country_region
+WHERE w.country_region IS NULL
+ORDER BY 1;
+
+CREATE SCHEMA IF NOT EXISTS aux;
+
+CREATE TABLE aux.country_name_map (
+    nome_historico TEXT PRIMARY KEY,
+    nome_padronizado TEXT
+);
+
+INSERT INTO aux.country_name_map (nome_historico, nome_padronizado) VALUES
+('US', 'United States'),
+('Korea, South', 'South Korea'),
+('Czechia', 'Czech Republic'),
+('Taiwan*', 'Taiwan'),
+('Diamond Princess', NULL), -- NULL indica que será ignorado
+('MS Zaandam', NULL),
+('World', NULL),
+('International', NULL);
+
+SELECT
+    COALESCE(m.nome_padronizado, fg.country_region) AS country,
+    fg.date,
+    fg.confirmed,
+    w.population
+FROM raw.full_grouped fg
+LEFT JOIN aux.country_name_map m
+    ON fg.country_region = m.nome_historico
+LEFT JOIN raw.worldometer_data w
+    ON w.country_region = COALESCE(m.nome_padronizado, fg.country_region)
+WHERE COALESCE(m.nome_padronizado, fg.country_region) IS NOT NULL;
+
+-- full_grouped: existe linha sem país ou data?
+SELECT COUNT(*) AS sem_pais FROM raw.full_grouped WHERE country_region IS NULL OR country_region = '';
+SELECT COUNT(*) AS sem_data FROM raw.full_grouped WHERE date IS NULL;
+
+-- worldometer: população ausente?
+SELECT COUNT(*) AS pop_nula FROM raw.worldometer_data WHERE population IS NULL;
+
+-- usa_county_wise: chaves essenciais
+SELECT COUNT(*) AS sem_combined FROM raw.usa_county_wise WHERE combined_key IS NULL OR combined_key = '';
+SELECT COUNT(*) AS sem_data FROM raw.usa_county_wise WHERE date IS NULL;
+
+SELECT country_region, continent, who_region
+FROM raw.worldometer_data
+WHERE population IS NULL;
+
+CREATE SCHEMA IF NOT EXISTS mart;
+
+CREATE OR REPLACE VIEW mart.worldometer_valid AS
+SELECT *
+FROM raw.worldometer_data
+WHERE population IS NOT NULL;
+
+-- Tabelas “históricas” por país+data
+CREATE INDEX IF NOT EXISTS idx_full_grouped_country_date
+  ON raw.full_grouped (country_region, date);
+
+CREATE INDEX IF NOT EXISTS idx_clean_complete_country_prov_date
+  ON raw.covid_19_clean_complete (country_region, province_state, date);
+
+-- Séries globais por data
+CREATE INDEX IF NOT EXISTS idx_day_wise_date
+  ON raw.day_wise (date);
+
+-- EUA por chave+data
+CREATE INDEX IF NOT EXISTS idx_usa_county_combined_date
+  ON raw.usa_county_wise (combined_key, date);
+
+-- Lista de países “estáticos”
+CREATE INDEX IF NOT EXISTS idx_worldometer_country
+  ON raw.worldometer_data (country_region);
+
+EXPLAIN ANALYZE
+SELECT date, confirmed, deaths, new_cases
+FROM raw.full_grouped
+WHERE country_region = 'Brazil'
+ORDER BY date;
+
+SELECT
+    date,
+    confirmed,
+    deaths,
+    ROUND((deaths::NUMERIC / NULLIF(confirmed,0)) * 100, 2) AS taxa_mortalidade_pct
+FROM raw.full_grouped
+WHERE country_region = 'Brazil'
+ORDER BY date;
+
+SELECT
+    country_region,
+    date,
+    new_cases,
+    new_deaths
+FROM raw.full_grouped
+WHERE country_region = 'Brazil'
+ORDER BY new_cases DESC
+LIMIT 10;
+
+SELECT
+  cw.country_region          AS pais,
+  w.continent                AS continente,
+  cw.confirmed               AS casos_totais,
+  w.population               AS populacao,
+  ROUND((cw.confirmed / NULLIF(w.population,0)) * 100, 4) AS pct_pop_infectada
+FROM raw.country_wise_latest cw
+JOIN mart.worldometer_valid w
+  ON w.country_region = cw.country_region
+WHERE cw.confirmed IS NOT NULL
+  AND w.population IS NOT NULL
+ORDER BY pct_pop_infectada DESC
+LIMIT 20;
+
+SELECT
+  COALESCE(m.nome_padronizado, cw.country_region)         AS pais,
+  w.continent                                             AS continente,
+  cw.confirmed                                            AS casos_totais,
+  w.population                                            AS populacao,
+  ROUND((cw.confirmed / NULLIF(w.population,0)) * 100, 4) AS pct_pop_infectada
+FROM raw.country_wise_latest cw
+LEFT JOIN aux.country_name_map m
+  ON m.nome_historico = cw.country_region
+JOIN mart.worldometer_valid w
+  ON w.country_region = COALESCE(m.nome_padronizado, cw.country_region)
+WHERE COALESCE(m.nome_padronizado, cw.country_region) IS NOT NULL
+  AND cw.confirmed IS NOT NULL
+ORDER BY pct_pop_infectada DESC
+LIMIT 20;
+
+SELECT
+    date,
+    confirmed,
+    new_cases,
+    ROUND(
+        AVG(new_cases) OVER (
+            ORDER BY date
+            ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
+        ), 2
+    ) AS media_movel_7d
+FROM raw.full_grouped
+WHERE country_region = 'Brazil'
+ORDER BY date;
+
+WITH movel AS (
+    SELECT
+        date,
+        new_cases,
+        ROUND(
+            AVG(new_cases) OVER (
+                ORDER BY date
+                ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
+            ), 2
+        ) AS media_movel_7d
+    FROM raw.full_grouped
+    WHERE country_region = 'Brazil'
+),
+ranked AS (
+    SELECT
+        date,
+        new_cases,
+        media_movel_7d,
+        RANK() OVER (ORDER BY media_movel_7d DESC) AS rank_media
+    FROM movel
+)
+SELECT
+    date,
+    new_cases,
+    media_movel_7d
+FROM ranked
+WHERE rank_media <= 10
+ORDER BY media_movel_7d DESC;
+
+WITH movel AS (
+  SELECT
+    date,
+    new_deaths,
+    ROUND(
+      AVG(new_deaths) OVER (
+        ORDER BY date
+        ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
+      ), 2
+    ) AS mm7_mortes
+  FROM raw.full_grouped
+  WHERE country_region = 'Brazil'
+),
+ranked AS (
+  SELECT
+    date, new_deaths, mm7_mortes,
+    RANK() OVER (ORDER BY mm7_mortes DESC) AS rnk
+  FROM movel
+)
+SELECT date, new_deaths, mm7_mortes
+FROM ranked
+WHERE rnk <= 10
+ORDER BY mm7_mortes DESC;
+
+WITH movel AS (
+  SELECT
+    date,
+    ROUND(
+      AVG(new_cases) OVER (
+        ORDER BY date
+        ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
+      ), 2
+    ) AS mm7
+  FROM raw.full_grouped
+  WHERE country_region = 'Brazil'
+),
+mes_pico AS (
+  SELECT
+    DATE_TRUNC('month', date)::date AS mes,
+    MAX(mm7) AS mm7_pico_mes
+  FROM movel
+  GROUP BY 1
+)
+SELECT m.mes,
+       m.mm7_pico_mes,
+       -- data exata do pico no mês:
+       (SELECT date
+        FROM movel x
+        WHERE DATE_TRUNC('month', x.date) = m.mes
+        ORDER BY x.mm7 DESC, x.date
+        LIMIT 1) AS data_pico
+FROM mes_pico m
+ORDER BY m.mes;
+
+WITH movel AS (
+  SELECT
+    country_region,
+    date,
+    AVG(new_cases) OVER (
+      PARTITION BY country_region
+      ORDER BY date
+      ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
+    ) AS mm7
+  FROM raw.full_grouped
+  WHERE new_cases IS NOT NULL
+),
+pico AS (
+  SELECT
+    country_region,
+    date,
+    mm7,
+    RANK() OVER (PARTITION BY country_region ORDER BY mm7 DESC, date) AS rnk
+  FROM movel
+)
+SELECT
+  p.country_region,
+  p.date        AS data_pico_mm7_casos,
+  ROUND(p.mm7,2) AS pico_mm7_casos
+FROM pico p
+WHERE rnk = 1
+ORDER BY pico_mm7_casos DESC
+LIMIT 100;
+
+WITH movel AS (
+  SELECT
+    country_region,
+    date,
+    AVG(new_deaths) OVER (
+      PARTITION BY country_region
+      ORDER BY date
+      ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
+    ) AS mm7_mortes
+  FROM raw.full_grouped
+  WHERE new_deaths IS NOT NULL
+),
+pico AS (
+  SELECT
+    country_region,
+    date,
+    mm7_mortes,
+    RANK() OVER (PARTITION BY country_region ORDER BY mm7_mortes DESC, date) AS rnk
+  FROM movel
+)
+SELECT
+  p.country_region,
+  p.date          AS data_pico_mm7_mortes,
+  ROUND(p.mm7_mortes,2) AS pico_mm7_mortes
+FROM pico p
+WHERE rnk = 1
+ORDER BY pico_mm7_mortes DESC
+LIMIT 100;
+
+WITH cumul AS (
+  SELECT
+    country_region,
+    date,
+    confirmed,
+    MIN(CASE WHEN confirmed >= 100 THEN date END)
+      OVER (PARTITION BY country_region) AS dt_100
+  FROM raw.full_grouped
+),
+movel AS (
+  SELECT
+    c.country_region,
+    c.date,
+    c.dt_100,
+    AVG(COALESCE(fg.new_cases,0)) OVER (
+      PARTITION BY c.country_region
+      ORDER BY c.date
+      ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
+    ) AS mm7
+  FROM cumul c
+  JOIN raw.full_grouped fg
+    ON fg.country_region = c.country_region
+   AND fg.date = c.date
+  WHERE c.dt_100 IS NOT NULL
+),
+pico AS (
+  SELECT
+    country_region,
+    date,
+    mm7,
+    RANK() OVER (PARTITION BY country_region ORDER BY mm7 DESC, date) AS rnk
+  FROM movel
+)
+SELECT
+  p.country_region,
+  (p.date - m.dt_100) AS dias_ate_pico_pos_100,
+  m.dt_100            AS data_100_confirmados,
+  p.date              AS data_pico_mm7,
+  ROUND(p.mm7,2)      AS pico_mm7
+FROM pico p
+JOIN (SELECT DISTINCT country_region, dt_100 FROM movel) m
+  ON m.country_region = p.country_region
+WHERE p.rnk = 1
+ORDER BY dias_ate_pico_pos_100;  -- mais rápido a alcançar o pico primeiro
+
+WITH movel AS (
+  SELECT
+    country_region,
+    date,
+    AVG(new_cases) OVER (
+      PARTITION BY country_region
+      ORDER BY date
+      ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
+    ) AS mm7
+  FROM raw.full_grouped
+  WHERE country_region IN ('Brazil','Argentina','Chile','Peru','Colombia','Uruguay','Paraguay','Bolivia')
+)
+SELECT
+  country_region, date, ROUND(mm7,2) AS mm7
+FROM movel
+ORDER BY country_region, date;
+
+WITH base AS (
+  SELECT fg.*, w.continent
+  FROM raw.full_grouped fg
+  JOIN mart.worldometer_valid w
+    ON w.country_region = fg.country_region
+),
+movel AS (
+  SELECT
+    continent,
+    date,
+    AVG(new_cases) OVER (
+      PARTITION BY continent
+      ORDER BY date
+      ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
+    ) AS mm7_continente
+  FROM base
+),
+pico AS (
+  SELECT
+    continent,
+    date,
+    mm7_continente,
+    RANK() OVER (PARTITION BY continent ORDER BY mm7_continente DESC, date) AS rnk
+  FROM movel
+)
+SELECT continent,
+       date AS data_pico,
+       ROUND(mm7_continente,2) AS pico_mm7
+FROM pico
+WHERE rnk = 1
+ORDER BY pico_mm7 DESC;
+
+TRUNCATE raw.usa_county_wise;
+
+INSERT INTO raw.usa_county_wise (
+  uid, iso2, iso3, code3, fips, admin2, province_state, country_region,
+  lat, long_, combined_key, date, confirmed, deaths
+)
+SELECT
+  NULLIF(uid,'')::NUMERIC,
+  iso2,
+  iso3,
+  NULLIF(code3,'')::NUMERIC,
+  NULLIF(fips,'')::NUMERIC,
+  admin2,
+  province_state,
+  country_region,
+  NULLIF(lat,'')::NUMERIC,
+  NULLIF(long_,'')::NUMERIC,
+  combined_key,
+  CASE WHEN NULLIF(date,'') IS NULL THEN NULL
+       ELSE to_date(date, 'FMMM/FMDD/YY') END,
+  NULLIF(confirmed,'')::NUMERIC,
+  NULLIF(deaths,'')::NUMERIC
+FROM raw.usa_county_wise_stg;
+
+SELECT COUNT(*) FROM raw.usa_county_wise;
+SELECT MIN(date), MAX(date) FROM raw.usa_county_wise;
+
+SET datestyle = 'ISO, MDY';
+
+SELECT
+  cw.country_region,
+  w.population,
+  cw.confirmed,
+  cw.deaths,
+  ROUND((cw.confirmed / NULLIF(w.population,0)) * 1e6, 2) AS casos_por_milhao,
+  ROUND((cw.deaths   / NULLIF(w.population,0)) * 1e6, 2) AS mortes_por_milhao,
+  ROUND((cw.deaths   / NULLIF(cw.confirmed,0)) * 100, 2)  AS taxa_letalidade_pct
+FROM raw.country_wise_latest cw
+JOIN mart.worldometer_valid w
+  ON w.country_region = cw.country_region
+WHERE w.population IS NOT NULL
+ORDER BY casos_por_milhao DESC
+LIMIT 100;
+
+SELECT
+    w.continent,
+    ROUND(AVG((cw.confirmed / NULLIF(w.population,0)) * 1e6), 2) AS media_casos_por_milhao,
+    ROUND(AVG((cw.deaths   / NULLIF(w.population,0)) * 1e6), 2) AS media_mortes_por_milhao,
+    ROUND(AVG((cw.deaths   / NULLIF(cw.confirmed,0)) * 100), 2)  AS media_taxa_letalidade
+FROM raw.country_wise_latest cw
+JOIN mart.worldometer_valid w
+  ON w.country_region = cw.country_region
+WHERE w.population IS NOT NULL
+GROUP BY w.continent
+ORDER BY media_casos_por_milhao DESC;
+
+-- Top 10 em casos por milhão
+SELECT
+  cw.country_region,
+  w.population,
+  cw.confirmed,
+  ROUND((cw.confirmed / NULLIF(w.population,0)) * 1e6, 2) AS casos_por_milhao
+FROM raw.country_wise_latest cw
+JOIN mart.worldometer_valid w
+  ON w.country_region = cw.country_region
+WHERE w.population IS NOT NULL
+ORDER BY casos_por_milhao DESC
+LIMIT 10;
+
+-- Top 10 em mortes por milhão
+SELECT
+  cw.country_region,
+  w.population,
+  cw.deaths,
+  ROUND((cw.deaths / NULLIF(w.population,0)) * 1e6, 2) AS mortes_por_milhao
+FROM raw.country_wise_latest cw
+JOIN mart.worldometer_valid w
+  ON w.country_region = cw.country_region
+WHERE w.population IS NOT NULL
+ORDER BY mortes_por_milhao DESC
+LIMIT 10;
+
+-- Top 10 em taxa de letalidade (%)
+SELECT
+  cw.country_region,
+  cw.confirmed,
+  cw.deaths,
+  ROUND((cw.deaths / NULLIF(cw.confirmed,0)) * 100, 2) AS taxa_letalidade_pct
+FROM raw.country_wise_latest cw
+JOIN mart.worldometer_valid w
+  ON w.country_region = cw.country_region
+WHERE w.population IS NOT NULL
+  AND cw.confirmed > 1000 -- opcional: filtra países com pelo menos 1000 casos
+ORDER BY taxa_letalidade_pct DESC
+LIMIT 10;
+
+-- Crescimento percentual diário
+SELECT
+    country_region,
+    date,
+    confirmed,
+    deaths,
+    ROUND(
+        (confirmed - LAG(confirmed) OVER (PARTITION BY country_region ORDER BY date))
+        / NULLIF(LAG(confirmed) OVER (PARTITION BY country_region ORDER BY date), 0) * 100
+    , 2) AS crescimento_pct_casos,
+    ROUND(
+        (deaths - LAG(deaths) OVER (PARTITION BY country_region ORDER BY date))
+        / NULLIF(LAG(deaths) OVER (PARTITION BY country_region ORDER BY date), 0) * 100
+    , 2) AS crescimento_pct_mortes
+FROM raw.full_grouped
+ORDER BY country_region, date;
+
+-- Média de crescimento nos primeiros 30 dias após atingir 100 casos
+WITH primeiros_30 AS (
+    SELECT
+        country_region,
+        date,
+        confirmed,
+        deaths,
+        ROW_NUMBER() OVER (PARTITION BY country_region ORDER BY date) AS dia
+    FROM raw.full_grouped
+    WHERE confirmed >= 100
+)
+SELECT
+    country_region,
+    ROUND(AVG(
+        (confirmed - LAG(confirmed) OVER (PARTITION BY country_region ORDER BY dia))
+        / NULLIF(LAG(confirmed) OVER (PARTITION BY country_region ORDER BY dia), 0) * 100
+    ), 2) AS media_crescimento_pct_30d
+FROM primeiros_30
+GROUP BY country_region
+ORDER BY media_crescimento_pct_30d DESC
+LIMIT 20;
+
+-- 1) acha a data em que cada país atingiu 100 casos
+WITH inicio AS (
+  SELECT country_region, MIN(date) AS dt_100
+  FROM raw.full_grouped
+  WHERE confirmed >= 100
+  GROUP BY country_region
+),
+
+-- 2) recorta a janela a partir desse marco (30 dias)
+primeiros_30 AS (
+  SELECT
+    fg.country_region,
+    fg.date,
+    fg.confirmed,
+    ROW_NUMBER() OVER (PARTITION BY fg.country_region ORDER BY fg.date) AS dia
+  FROM raw.full_grouped fg
+  JOIN inicio i
+    ON i.country_region = fg.country_region
+  WHERE fg.date >= i.dt_100
+    AND fg.date <  i.dt_100 + INTERVAL '30 days'
+),
+
+-- 3) calcula o crescimento diário (%), fora de agregações
+crescimento AS (
+  SELECT
+    country_region,
+    dia,
+    confirmed,
+    LAG(confirmed) OVER (PARTITION BY country_region ORDER BY dia) AS confirmed_prev,
+    CASE
+      WHEN LAG(confirmed) OVER (PARTITION BY country_region ORDER BY dia) IS NULL
+           OR LAG(confirmed) OVER (PARTITION BY country_region ORDER BY dia) = 0
+      THEN NULL
+      ELSE ((confirmed - LAG(confirmed) OVER (PARTITION BY country_region ORDER BY dia))
+             / LAG(confirmed) OVER (PARTITION BY country_region ORDER BY dia)::numeric) * 100
+    END AS crescimento_pct
+  FROM primeiros_30
+)
+
+-- 4) média do crescimento nesses 30 dias
+SELECT
+  country_region,
+  ROUND(AVG(crescimento_pct), 2) AS media_crescimento_pct_30d
+FROM crescimento
+GROUP BY country_region
+ORDER BY media_crescimento_pct_30d DESC
+LIMIT 20;
+
+-- Crescimento percentual semanal (WoW)
+WITH semanal AS (
+  SELECT
+    country_region,
+    DATE_TRUNC('week', date)::date AS semana,
+    SUM(COALESCE(new_cases,0))    AS casos_semana
+  FROM raw.full_grouped
+  GROUP BY country_region, DATE_TRUNC('week', date)
+),
+wow AS (
+  SELECT
+    country_region,
+    semana,
+    casos_semana,
+    LAG(casos_semana) OVER (PARTITION BY country_region ORDER BY semana) AS casos_semana_prev
+  FROM semanal
+)
+SELECT
+  country_region,
+  semana,
+  casos_semana,
+  ROUND(
+    (casos_semana - casos_semana_prev) / NULLIF(casos_semana_prev,0)::numeric * 100
+  , 2) AS crescimento_pct_wow
+FROM wow
+ORDER BY country_region, semana;
+
+-- Versão por mortes
+WITH semanal AS (
+  SELECT
+    country_region,
+    DATE_TRUNC('week', date)::date AS semana,
+    SUM(COALESCE(new_deaths,0))   AS mortes_semana
+  FROM raw.full_grouped
+  GROUP BY country_region, DATE_TRUNC('week', date)
+),
+wow AS (
+  SELECT
+    country_region,
+    semana,
+    mortes_semana,
+    LAG(mortes_semana) OVER (PARTITION BY country_region ORDER BY semana) AS mortes_semana_prev
+  FROM semanal
+)
+SELECT
+  country_region,
+  semana,
+  mortes_semana,
+  ROUND(
+    (mortes_semana - mortes_semana_prev) / NULLIF(mortes_semana_prev,0)::numeric * 100
+  , 2) AS crescimento_pct_wow
+FROM wow
+ORDER BY country_region, semana;
+
+-- Evolução semanal por continente
+WITH semanal AS (
+  SELECT
+    w.continent,
+    DATE_TRUNC('week', fg.date)::date AS semana,
+    SUM(fg.new_cases)  AS casos_semana,
+    SUM(fg.new_deaths) AS mortes_semana,
+    SUM(w.population)  AS pop_total
+  FROM raw.full_grouped fg
+  JOIN mart.worldometer_valid w
+    ON w.country_region = fg.country_region
+  WHERE w.population IS NOT NULL
+  GROUP BY w.continent, DATE_TRUNC('week', fg.date)
+)
+SELECT
+  continent,
+  semana,
+  ROUND((casos_semana / NULLIF(pop_total,0)) * 1e6, 2)  AS casos_por_milhao_semana,
+  ROUND((mortes_semana / NULLIF(pop_total,0)) * 1e6, 2) AS mortes_por_milhao_semana
+FROM semanal
+ORDER BY continent, semana;
+
+-- Ranking de países por continente
+SELECT *
+FROM (
+    SELECT
+      w.continent,
+      cw.country_region,
+      ROUND((cw.confirmed / NULLIF(w.population,0)) * 1e6, 2) AS casos_por_milhao,
+      ROW_NUMBER() OVER (PARTITION BY w.continent ORDER BY (cw.confirmed / NULLIF(w.population,0)) DESC) AS posicao
+    FROM raw.country_wise_latest cw
+    JOIN mart.worldometer_valid w
+      ON w.country_region = cw.country_region
+    WHERE w.population IS NOT NULL
+) sub
+WHERE posicao <= 5
+ORDER BY continent, posicao;
+
+-- Série diária com média móvel (casos)
+SELECT
+  date,
+  new_cases,
+  ROUND(AVG(new_cases) OVER (
+    ORDER BY date
+    ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
+  ), 2) AS mm7_casos
+FROM raw.full_grouped
+WHERE country_region = 'Brazil'
+ORDER BY date;
+
+-- Série diária com média móvel (mortes)
+SELECT
+  date,
+  new_deaths,
+  ROUND(AVG(new_deaths) OVER (
+    ORDER BY date
+    ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
+  ), 2) AS mm7_mortes
+FROM raw.full_grouped
+WHERE country_region = 'Brazil'
+ORDER BY date;
+
+-- Top 10 picos (casos) por média móvel
+WITH movel AS (
+  SELECT
+    date,
+    ROUND(AVG(new_deaths) OVER (
+      ORDER BY date
+      ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
+    ), 2) AS mm7
+  FROM raw.full_grouped
+  WHERE country_region = 'Brazil'
+)
+SELECT date, mm7 AS pico_mm7_mortes
+FROM (
+  SELECT date, mm7, RANK() OVER (ORDER BY mm7 DESC, date) r
+  FROM movel
+) x
+WHERE r <= 10
+ORDER BY pico_mm7_mortes DESC;
+
+-- Indicadores finais normalizados (snapshot)
+SELECT
+  cw.country_region,
+  w.population,
+  cw.confirmed,
+  cw.deaths,
+  ROUND((cw.confirmed / NULLIF(w.population,0)) * 1e6, 2) AS casos_por_milhao,
+  ROUND((cw.deaths   / NULLIF(w.population,0)) * 1e6, 2) AS mortes_por_milhao,
+  ROUND((cw.deaths   / NULLIF(cw.confirmed,0)) * 100, 2)  AS taxa_letalidade_pct
+FROM raw.country_wise_latest cw
+JOIN mart.worldometer_valid w
+  ON w.country_region = cw.country_region
+WHERE cw.country_region = 'Brazil';
+
+-- Casos por milhão - ranking global
+SELECT
+  cw.country_region,
+  w.continent,
+  w.population,
+  cw.confirmed,
+  ROUND((cw.confirmed / NULLIF(w.population,0)) * 1e6, 2) AS casos_por_milhao
+FROM raw.country_wise_latest cw
+JOIN mart.worldometer_valid w
+  ON w.country_region = cw.country_region
+WHERE w.population IS NOT NULL
+ORDER BY casos_por_milhao DESC;
+
+-- Mortes por milhão - ranking global
+SELECT
+  cw.country_region,
+  w.continent,
+  w.population,
+  cw.deaths,
+  ROUND((cw.deaths / NULLIF(w.population,0)) * 1e6, 2) AS mortes_por_milhao
+FROM raw.country_wise_latest cw
+JOIN mart.worldometer_valid w
+  ON w.country_region = cw.country_region
+WHERE w.population IS NOT NULL
+ORDER BY mortes_por_milhao DESC;
+
+-- Evolução acumulada comparando 5 países
+SELECT
+  fg.date,
+  fg.country_region,
+  ROUND((fg.confirmed / NULLIF(w.population,0)) * 1e6, 2) AS casos_por_milhao
+FROM raw.full_grouped fg
+JOIN mart.worldometer_valid w
+  ON w.country_region = fg.country_region
+WHERE fg.country_region IN ('Brazil','Argentina','United States','India','Italy')
+ORDER BY date, country_region;
+
+-- Países que nunca tiveram mais de 100 casos no total
+SELECT
+  cw.country_region,
+  w.continent,
+  cw.confirmed
+FROM raw.country_wise_latest cw
+JOIN mart.worldometer_valid w
+  ON w.country_region = cw.country_region
+WHERE cw.confirmed < 100
+ORDER BY cw.confirmed ASC;
+
+-- Países que zeraram casos por mais de 30 dias
+WITH sem_casos AS (
+  SELECT
+    country_region,
+    date,
+    new_cases,
+    COUNT(*) FILTER (WHERE new_cases = 0)
+      OVER (PARTITION BY country_region ORDER BY date ROWS BETWEEN 29 PRECEDING AND CURRENT ROW) AS dias_zero
+  FROM raw.full_grouped
+)
+SELECT DISTINCT country_region
+FROM sem_casos
+WHERE dias_zero = 30;
+
+-- Países com a maior queda percentual em novos casos (últimos 30 dias)
+WITH ultimos AS (
+  SELECT
+    country_region,
+    DATE_TRUNC('day', date)::date AS data,
+    SUM(new_cases) OVER (PARTITION BY country_region ORDER BY date ROWS BETWEEN 29 PRECEDING AND CURRENT ROW) AS casos_30d
+  FROM raw.full_grouped
+),
+comparativo AS (
+  SELECT
+    country_region,
+    MAX(CASE WHEN data = (SELECT MAX(date) FROM raw.full_grouped) THEN casos_30d END) AS casos_finais,
+    MAX(CASE WHEN data = (SELECT MAX(date) - INTERVAL '30 days' FROM raw.full_grouped) THEN casos_30d END) AS casos_anteriores
+  FROM ultimos
+  GROUP BY country_region
+)
+SELECT
+  country_region,
+  casos_anteriores,
+  casos_finais,
+  ROUND((casos_finais - casos_anteriores) / NULLIF(casos_anteriores,0)::numeric * 100, 2) AS variacao_pct
+FROM comparativo
+WHERE casos_anteriores > 0
+ORDER BY variacao_pct ASC;
+
+-- Países com picos concentrados (mais de 40% dos casos em um único mês)
+WITH mensal AS (
+  SELECT
+    country_region,
+    DATE_TRUNC('month', date)::date AS mes,
+    SUM(new_cases) AS casos_mes
+  FROM raw.full_grouped
+  GROUP BY country_region, DATE_TRUNC('month', date)
+),
+total AS (
+  SELECT country_region, SUM(casos_mes) AS casos_total
+  FROM mensal
+  GROUP BY country_region
+)
+SELECT
+  m.country_region,
+  m.mes,
+  m.casos_mes,
+  ROUND((m.casos_mes / NULLIF(t.casos_total,0)) * 100, 2) AS pct_no_mes
+FROM mensal m
+JOIN total t
+  ON m.country_region = t.country_region
+WHERE (m.casos_mes / NULLIF(t.casos_total,0)) > 0.4
+ORDER BY pct_no_mes DESC;
