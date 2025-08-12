@@ -1,5 +1,5 @@
 # INSIGHTS — COVID-19
-_Atualizado em: 2025-08-12 20:32_
+_Atualizado em: 2025-08-12 20:48_
 
 ## Índice de Gráficos
 
