@@ -1,36 +1,93 @@
-# COVID-19 com PostgreSQL: da limpeza SQL ao storytelling analítico
+# 📊 Projeto COVID-19 — Análise SQL + Python
 
-Pipeline SQL (PostgreSQL/pgAdmin) aplicado ao dataset COVID-19 do Kaggle, com tabelas de staging, limpeza/padronização e geração de métricas analíticas (CSVs) usadas em gráficos e insights.
+Este projeto apresenta **insights visuais e estatísticos** sobre a pandemia de COVID-19, a partir de consultas SQL (PostgreSQL) aplicadas a dados originais do Kaggle, exportando **34 tabelas derivadas (CSV)** para análise e visualização com Python.
 
-## 📊 Destaques
-- **Brasil — pico MM7 (casos):** 77 129 na semana de 2021-06-23.
-- **Brasil — pico MM7 (mortes):** 3 124 na semana de 2021-04-09.
-- **Ranking per capita — casos:** posição 49/220 (≈ 107 944).
-- **Ranking per capita — mortes:** posição 13/220 (≈ 2 461).
-- **Timing do 1º pico pós-100 casos:** mediana 119 dias (P25 76, P75 165) em 219 países.
+## 📁 Estrutura do projeto
 
-## 📂 Estrutura do repositório
+```
+projeto_kaggle_covid/
+  ├── data/
+  │   ├── raw/            # Dados originais do Kaggle
+  │   └── processed/      # 34 CSVs processados
+  ├── notebooks/
+  │   └── covid_insights_publish.ipynb  # Notebook oficial de análise
+  ├── charts/             # Gráficos gerados automaticamente
+  ├── reports/
+  │   └── INSIGHTS.md     # Storytelling com índice de gráficos
+  ├── requirements.txt    # Dependências Python
+  └── README.md           # Este arquivo
+```
 
-## 🚀 Como reproduzir
-1. PostgreSQL ≥ 13 (pgAdmin).
-2. Criar schema/tabelas `*_stg` e executar o script completo (Passos 1–7).
-3. Exportar os CSVs para `data/processed/`.
-4. Rodar o notebook (Kaggle ou local) para gerar gráficos e insights.
+## 🗂 Dataset original
 
-## 📈 Gráficos sugeridos
-- Séries temporais com **MM7** (casos e mortes) — Brasil.
-- **Rankings per capita** (casos/mortes por milhão).
-- **Mapa de calor** por continente (evolução semanal).
-- **Picos** (linhas de referência e anotações).
-- **Comparativo** Brasil × vizinhos × média continental.
+- Fonte: [COVID-19 Dataset — Kaggle](https://www.kaggle.com/)
+- **Observação:** os dados originais (pasta `data/raw/`) não são versionados no GitHub devido ao tamanho/licença.
 
-## ⚠️ Limitações
-- Subnotificação e diferenças de testagem/registro por país.
-- Atrasos e revisões (*backfills*) nas séries.
-- Métricas per capita dependem da qualidade da coluna de população.
+## 🚀 Como reproduzir localmente
 
-## 📚 Créditos
-- Dados: Kaggle — COVID-19 Data.
-- Autor: Murilo Guedes.
-- Licença do código: MIT.
+### 1️⃣ Clonar o repositório
+```bash
+git clone <URL_DO_SEU_REPO>.git
+cd projeto_kaggle_covid
+```
 
+### 2️⃣ Criar e ativar ambiente virtual
+**Windows (PowerShell):**
+```powershell
+py -m venv .venv
+.venv\Scripts\Activate.ps1
+```
+
+**Mac/Linux (bash/zsh):**
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+### 3️⃣ Instalar dependências
+```bash
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+### 4️⃣ Executar o notebook
+- Abra `notebooks/covid_insights_publish.ipynb` no VS Code ou Jupyter.
+- Selecione o **kernel** do ambiente virtual `.venv`.
+- Execute todas as células (**Run All**).
+
+**Resultados esperados:**
+- PNGs gerados em `charts/`
+- Arquivo `reports/INSIGHTS.md` atualizado
+- Gráficos exibidos inline no notebook
+
+## 📈 Exemplos de gráficos
+
+*(Abaixo, insira exemplos reais da pasta `charts/`)*
+
+![Exemplo 1](charts/exemplo1.png)
+![Exemplo 2](charts/exemplo2.png)
+
+## 📜 Storytelling
+
+O arquivo [`reports/INSIGHTS.md`](reports/INSIGHTS.md) contém:
+- Índice de gráficos
+- Links para cada visualização
+- Observações gerais sobre os resultados
+
+## 🛠 Tecnologias utilizadas
+- **SQL** (PostgreSQL) — consultas e agregações
+- **Python** 3.x
+  - pandas
+  - matplotlib
+  - numpy
+- **Jupyter Notebook**
+- **VS Code**
+
+## 🌐 Publicação no Kaggle
+Este notebook foi adaptado para rodar diretamente no **Kaggle Notebooks**, bastando:
+- Criar um novo Kernel no Kaggle
+- Fazer upload de `covid_insights_publish.ipynb`
+- Adicionar como *Input Dataset* a pasta `data/processed`
+
+## 📄 Licença
+Este projeto está licenciado sob a licença MIT — veja o arquivo LICENSE para mais detalhes.
