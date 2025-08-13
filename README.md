@@ -1,71 +1,55 @@
-# 📊 Projeto Kaggle COVID-19 — Análises, Insights e Visualizações
+# 📊 Projeto COVID-19 — Kaggle
 
-Este repositório contém um estudo detalhado sobre a evolução da pandemia de COVID-19, baseado em dados abertos disponibilizados no Kaggle.  
-O trabalho inclui **coleta, tratamento, análise e visualização dos dados**, além de **insights estratégicos** apresentados em diferentes formatos.
+Este projeto realiza a análise de dados de COVID-19, explorando tendências temporais, comparações regionais e relação com taxas de vacinação.  
+Todos os scripts e relatórios foram desenvolvidos para publicação no GitHub e Kaggle.
 
 ---
 
-## 📂 Estrutura do Projeto
+## 📂 Relatórios Disponíveis
+
+- 📄 [Resumo Executivo (PDF)](reports/executive_summary.pdf) — Visão rápida para apresentação.
+- 📊 [INSIGHTS detalhado (Markdown)](reports/insights.md) — Interpretação gráfica e textual.
+
+---
+
+## 📦 Estrutura do Repositório
 
 ```
-projeto_kaggle_covid/
-├── charts/                # Gráficos gerados durante a análise
-├── data/                  # Arquivos de dados (originais e tratados)
-├── reports/               # Relatórios e documentos finais
-│   ├── INSIGHTS.md        # Relatório detalhado em Markdown
-│   └── executive_summary.pdf  # Resumo executivo de 1 página
-├── covid_report.html      # Relatório HTML auto-contido com gráficos embutidos
-├── covid_analysis.ipynb   # Notebook oficial (publicável no Kaggle)
-└── README.md              # Este arquivo
+/projeto_kaggle_covid
+  /charts       → Gráficos gerados pela análise
+  /data         → Bases de dados originais e tratadas
+  /notebooks    → Notebooks Jupyter com o código da análise
+  /reports      → Relatórios finais (PDF, Markdown)
+  README.md     → Documento de apresentação do projeto
 ```
 
 ---
 
-## 📈 Objetivos da Análise
+## 🚀 Como Executar o Projeto
 
-- Entender a evolução temporal da pandemia.
-- Comparar tendências entre regiões e países.
-- Avaliar impacto da vacinação nos casos e óbitos.
-- Identificar ondas, picos e períodos de estabilização.
-- Destacar outliers e eventos atípicos.
-
----
-
-## 🗂 Relatórios Disponíveis
-
-- 📑 [Resumo Executivo (PDF)](reports/executive_summary.pdf) — Visão rápida para apresentação.
-- 🌐 [Relatório HTML completo](covid_report.html) — Auto-contido com todos os gráficos embutidos.
-- 📘 [INSIGHTS detalhado (Markdown)](reports/INSIGHTS.md) — Interpretação gráfica e textual.
-
----
-
-## 🛠 Tecnologias Utilizadas
-
-- **Python** (Pandas, NumPy, Matplotlib, Seaborn)
-- **Jupyter Notebook**
-- **Git/GitHub**
-- **Kaggle** (para dataset original)
-- **Markdown / LaTeX** (documentação e relatórios)
+1. Clone o repositório:
+   ```bash
+   git clone git@github.com:SEU_USUARIO/projeto_kaggle_covid.git
+   ```
+2. Instale as dependências:
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. Execute o notebook principal para gerar gráficos e relatórios:
+   ```bash
+   jupyter notebook notebooks/analise_covid.ipynb
+   ```
 
 ---
 
-## 📊 Exemplos de Gráficos
+## 📌 Observações
 
-- Evolução de casos ao longo do tempo
-- Evolução de óbitos
-- Comparativo entre regiões
-- Relação casos × vacinação
-- Taxa de vacinação por país
-
-Todos os gráficos estão disponíveis na pasta [`charts/`](charts/).
+- Os gráficos utilizados no relatório estão disponíveis na pasta `/charts`.
+- O **Resumo Executivo** é ideal para apresentações rápidas.
+- O **INSIGHTS detalhado** contém a análise completa com interpretações.
 
 ---
 
 ## 📜 Licença
 
-Este projeto é de uso livre para fins educacionais e de pesquisa, seguindo os termos de uso do Kaggle e a licença dos dados originais.
-
----
-
-✍ **Autor:** Murilo Guedes  
-📅 **Última atualização:** Agosto/2025
+Este projeto está licenciado sob a [MIT License](LICENSE).
