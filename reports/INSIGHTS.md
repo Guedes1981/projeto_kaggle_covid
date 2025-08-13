@@ -15,20 +15,27 @@ Este relatório apresenta uma visão consolidada dos principais resultados obtid
 
 ## Gráficos e Análises
 
-A seguir estão os gráficos gerados, cada um com seu respectivo objetivo analítico.
-
 ### Casos X Vacinacao
-![casos_x_vacinacao.png](../charts/casos_x_vacinacao.png)
+![casos_x_vacinacao.png]({repo}/charts/casos_x_vacinacao.png)
+
+**Insight:** Mostra a relação entre o aumento da taxa de vacinação e a redução proporcional de novos casos.
 
 ### Comparativo Regioes
-![comparativo_regioes.png](../charts/comparativo_regioes.png)
+![comparativo_regioes.png]({repo}/charts/comparativo_regioes.png)
+
+**Insight:** Compara o comportamento da pandemia em diferentes regiões, evidenciando picos em momentos distintos.
 
 ### Evolucao Casos
-![evolucao_casos.png](../charts/evolucao_casos.png)
+![evolucao_casos.png]({repo}/charts/evolucao_casos.png)
+
+**Insight:** Apresenta a linha temporal dos casos registrados, destacando as ondas sucessivas e seus intervalos.
 
 ### Evolucao Obitos
-![evolucao_obitos.png](../charts/evolucao_obitos.png)
+![evolucao_obitos.png]({repo}/charts/evolucao_obitos.png)
+
+**Insight:** Evidencia as variações nas taxas de mortalidade ao longo do tempo e a redução gradual após campanhas de vacinação.
 
 ### Taxa Vacinacao
-![taxa_vacinacao.png](../charts/taxa_vacinacao.png)
+![taxa_vacinacao.png]({repo}/charts/taxa_vacinacao.png)
 
+**Insight:** Mostra o avanço percentual da vacinação ao longo do tempo, com destaque para períodos de aceleração.
