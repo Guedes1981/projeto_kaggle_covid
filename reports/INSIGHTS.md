@@ -1,157 +1,34 @@
 # INSIGHTS — COVID-19
-_Atualizado em: 2025-08-13 12:05_
 
-## Índice de Gráficos
+## Sumário Executivo
 
-- [701_brasil_mm7_casos__new_cases_por_data](../charts/701_brasil_mm7_casos__new_cases_por_data.png)
-- [702_brasil_mm7_mortes__new_deaths_por_data](../charts/702_brasil_mm7_mortes__new_deaths_por_data.png)
-- [704_brasil_top10_picos_mortes__pico_mm7_mortes_por_data](../charts/704_brasil_top10_picos_mortes__pico_mm7_mortes_por_data.png)
-- [705_brasil_indicadores_snapshot__top15_country_region](../charts/705_brasil_indicadores_snapshot__top15_country_region.png)
-- [721_ranking_global_casos_por_milhao__top15_country_region](../charts/721_ranking_global_casos_por_milhao__top15_country_region.png)
-- [722_ranking_global_mortes_por_milhao__top15_country_region](../charts/722_ranking_global_mortes_por_milhao__top15_country_region.png)
-- [723_evolucao_5paises_casos_por_milhao__casos_por_milhao_por_data](../charts/723_evolucao_5paises_casos_por_milhao__casos_por_milhao_por_data.png)
-- [731_paises_com_menos_100_casos__top15_country_region](../charts/731_paises_com_menos_100_casos__top15_country_region.png)
-- [733_maior_queda_pct_30dias__top15_country_region](../charts/733_maior_queda_pct_30dias__top15_country_region.png)
-- [734_picos_concentrados__top15_country_region](../charts/734_picos_concentrados__top15_country_region.png)
-- [casos_mortes_por_milhão_e_letalidade_por_continente__hist_media_casos_por_milhao](../charts/casos_mortes_por_milhão_e_letalidade_por_continente__hist_media_casos_por_milhao.png)
-- [Casosmortes_por_milhão_+_letalidade_com_população__top15_country_region](../charts/Casosmortes_por_milhão_+_letalidade_com_população__top15_country_region.png)
-- [Comparação_focada_Brasil_vs_vizinhos__mm7_por_data](../charts/Comparação_focada_Brasil_vs_vizinhos__mm7_por_data.png)
-- [crescimento_percentual_diario__confirmed_por_data](../charts/crescimento_percentual_diario__confirmed_por_data.png)
-- [Crescimento_percentual_semanal_WoW_por_casos__top15_country_region](../charts/Crescimento_percentual_semanal_WoW_por_casos__top15_country_region.png)
-- [Crescimento_percentual_semanal_WoW_por_mortes__top15_country_region](../charts/Crescimento_percentual_semanal_WoW_por_mortes__top15_country_region.png)
-- [Evolução_semanal_por_continente__hist_casos_por_milhao_semana](../charts/Evolução_semanal_por_continente__hist_casos_por_milhao_semana.png)
-- [mm7_casos_brasil](../charts/mm7_casos_brasil.png)
-- [mm7_mortes_brasil](../charts/mm7_mortes_brasil.png)
-- [média_de_crescimento_nos_primeiros_30_dias_após_atingir_100_casos__top15_country_region](../charts/média_de_crescimento_nos_primeiros_30_dias_após_atingir_100_casos__top15_country_region.png)
-- [Média_móvel_de_7_dias_e_identificação_de_ondas_Brasil__confirmed_por_data](../charts/Média_móvel_de_7_dias_e_identificação_de_ondas_Brasil__confirmed_por_data.png)
-- [Média_móvel_de_7_dias_e_identificação_de_ondas_Brasil_picos__new_cases_por_data](../charts/Média_móvel_de_7_dias_e_identificação_de_ondas_Brasil_picos__new_cases_por_data.png)
-- [Média_móvel_e_picos_de_mortes_Brasil__new_deaths_por_data](../charts/Média_móvel_e_picos_de_mortes_Brasil__new_deaths_por_data.png)
-- [Pico_de_novos_casos_e_novas_mortes_no_Brasil__new_cases_por_data](../charts/Pico_de_novos_casos_e_novas_mortes_no_Brasil__new_cases_por_data.png)
-- [Pico_por_continente_agregado__pico_mm7_por_data](../charts/Pico_por_continente_agregado__pico_mm7_por_data.png)
-- [Ranking_de_paises_por_continente__top15_country_region](../charts/Ranking_de_paises_por_continente__top15_country_region.png)
-- [ranking_de_países_por_%_da_população_infectada__top15_pais](../charts/ranking_de_países_por_%_da_população_infectada__top15_pais.png)
-- [Resumo_mensal_pico_da_média_móvel_em_cada_mês_Brasil__mm7_pico_mes_por_data](../charts/Resumo_mensal_pico_da_média_móvel_em_cada_mês_Brasil__mm7_pico_mes_por_data.png)
-- [tendencia_de_casos_e_mortes_no_Brasil__confirmed_por_data](../charts/tendencia_de_casos_e_mortes_no_Brasil__confirmed_por_data.png)
-- [Timing_relativo_dias_até_o_primeiro_pico_após_100_casos__dias_ate_pico_pos_100_por_data](../charts/Timing_relativo_dias_até_o_primeiro_pico_após_100_casos__dias_ate_pico_pos_100_por_data.png)
-- [top10_casos_por_milhao](../charts/top10_casos_por_milhao.png)
-- [top10_mortes_por_milhao](../charts/top10_mortes_por_milhao.png)
-- [Top_10_em_casos_por_milhão__top15_country_region](../charts/Top_10_em_casos_por_milhão__top15_country_region.png)
-- [Top_10_em_mortes_por_milhão__top15_country_region](../charts/Top_10_em_mortes_por_milhão__top15_country_region.png)
-- [Top_10_em_taxa_de_letalidade__top15_country_region](../charts/Top_10_em_taxa_de_letalidade__top15_country_region.png)
-- [Top_1_pico_de_média_móvel_de_casos_por_país__pico_mm7_casos_por_data](../charts/Top_1_pico_de_média_móvel_de_casos_por_país__pico_mm7_casos_por_data.png)
-- [Top_1_pico_de_média_móvel_de_mortes_por_país__pico_mm7_mortes_por_data](../charts/Top_1_pico_de_média_móvel_de_mortes_por_país__pico_mm7_mortes_por_data.png)
+Este relatório apresenta uma visão consolidada dos principais resultados obtidos a partir dos dados de COVID-19, com o objetivo de fornecer uma compreensão clara das tendências, padrões e pontos de atenção. Os gráficos gerados ajudam a identificar a evolução temporal da pandemia, diferenças regionais, taxas de vacinação, impacto sobre a mortalidade e outras métricas relevantes.
+
+**Principais Destaques:**
+- Análise temporal de casos e óbitos em diferentes períodos da pandemia.
+- Comparativo entre regiões e países, identificando padrões de crescimento ou estabilização.
+- Relação entre taxa de vacinação e redução de casos graves.
+- Análise de picos e ondas sucessivas de infecção.
+- Identificação de outliers e eventos atípicos.
 
 ---
 
-## Galeria de Gráficos
+## Gráficos e Análises
 
-### 701_brasil_mm7_casos__new_cases_por_data
-![701_brasil_mm7_casos__new_cases_por_data](../charts/701_brasil_mm7_casos__new_cases_por_data.png)
+A seguir estão os gráficos gerados, cada um com seu respectivo objetivo analítico.
 
-### 702_brasil_mm7_mortes__new_deaths_por_data
-![702_brasil_mm7_mortes__new_deaths_por_data](../charts/702_brasil_mm7_mortes__new_deaths_por_data.png)
+### Casos X Vacinacao
+![casos_x_vacinacao.png](../charts/casos_x_vacinacao.png)
 
-### 704_brasil_top10_picos_mortes__pico_mm7_mortes_por_data
-![704_brasil_top10_picos_mortes__pico_mm7_mortes_por_data](../charts/704_brasil_top10_picos_mortes__pico_mm7_mortes_por_data.png)
+### Comparativo Regioes
+![comparativo_regioes.png](../charts/comparativo_regioes.png)
 
-### 705_brasil_indicadores_snapshot__top15_country_region
-![705_brasil_indicadores_snapshot__top15_country_region](../charts/705_brasil_indicadores_snapshot__top15_country_region.png)
+### Evolucao Casos
+![evolucao_casos.png](../charts/evolucao_casos.png)
 
-### 721_ranking_global_casos_por_milhao__top15_country_region
-![721_ranking_global_casos_por_milhao__top15_country_region](../charts/721_ranking_global_casos_por_milhao__top15_country_region.png)
+### Evolucao Obitos
+![evolucao_obitos.png](../charts/evolucao_obitos.png)
 
-### 722_ranking_global_mortes_por_milhao__top15_country_region
-![722_ranking_global_mortes_por_milhao__top15_country_region](../charts/722_ranking_global_mortes_por_milhao__top15_country_region.png)
+### Taxa Vacinacao
+![taxa_vacinacao.png](../charts/taxa_vacinacao.png)
 
-### 723_evolucao_5paises_casos_por_milhao__casos_por_milhao_por_data
-![723_evolucao_5paises_casos_por_milhao__casos_por_milhao_por_data](../charts/723_evolucao_5paises_casos_por_milhao__casos_por_milhao_por_data.png)
-
-### 731_paises_com_menos_100_casos__top15_country_region
-![731_paises_com_menos_100_casos__top15_country_region](../charts/731_paises_com_menos_100_casos__top15_country_region.png)
-
-### 733_maior_queda_pct_30dias__top15_country_region
-![733_maior_queda_pct_30dias__top15_country_region](../charts/733_maior_queda_pct_30dias__top15_country_region.png)
-
-### 734_picos_concentrados__top15_country_region
-![734_picos_concentrados__top15_country_region](../charts/734_picos_concentrados__top15_country_region.png)
-
-### casos_mortes_por_milhão_e_letalidade_por_continente__hist_media_casos_por_milhao
-![casos_mortes_por_milhão_e_letalidade_por_continente__hist_media_casos_por_milhao](../charts/casos_mortes_por_milhão_e_letalidade_por_continente__hist_media_casos_por_milhao.png)
-
-### Casosmortes_por_milhão_+_letalidade_com_população__top15_country_region
-![Casosmortes_por_milhão_+_letalidade_com_população__top15_country_region](../charts/Casosmortes_por_milhão_+_letalidade_com_população__top15_country_region.png)
-
-### Comparação_focada_Brasil_vs_vizinhos__mm7_por_data
-![Comparação_focada_Brasil_vs_vizinhos__mm7_por_data](../charts/Comparação_focada_Brasil_vs_vizinhos__mm7_por_data.png)
-
-### crescimento_percentual_diario__confirmed_por_data
-![crescimento_percentual_diario__confirmed_por_data](../charts/crescimento_percentual_diario__confirmed_por_data.png)
-
-### Crescimento_percentual_semanal_WoW_por_casos__top15_country_region
-![Crescimento_percentual_semanal_WoW_por_casos__top15_country_region](../charts/Crescimento_percentual_semanal_WoW_por_casos__top15_country_region.png)
-
-### Crescimento_percentual_semanal_WoW_por_mortes__top15_country_region
-![Crescimento_percentual_semanal_WoW_por_mortes__top15_country_region](../charts/Crescimento_percentual_semanal_WoW_por_mortes__top15_country_region.png)
-
-### Evolução_semanal_por_continente__hist_casos_por_milhao_semana
-![Evolução_semanal_por_continente__hist_casos_por_milhao_semana](../charts/Evolução_semanal_por_continente__hist_casos_por_milhao_semana.png)
-
-### mm7_casos_brasil
-![mm7_casos_brasil](../charts/mm7_casos_brasil.png)
-
-### mm7_mortes_brasil
-![mm7_mortes_brasil](../charts/mm7_mortes_brasil.png)
-
-### média_de_crescimento_nos_primeiros_30_dias_após_atingir_100_casos__top15_country_region
-![média_de_crescimento_nos_primeiros_30_dias_após_atingir_100_casos__top15_country_region](../charts/média_de_crescimento_nos_primeiros_30_dias_após_atingir_100_casos__top15_country_region.png)
-
-### Média_móvel_de_7_dias_e_identificação_de_ondas_Brasil__confirmed_por_data
-![Média_móvel_de_7_dias_e_identificação_de_ondas_Brasil__confirmed_por_data](../charts/Média_móvel_de_7_dias_e_identificação_de_ondas_Brasil__confirmed_por_data.png)
-
-### Média_móvel_de_7_dias_e_identificação_de_ondas_Brasil_picos__new_cases_por_data
-![Média_móvel_de_7_dias_e_identificação_de_ondas_Brasil_picos__new_cases_por_data](../charts/Média_móvel_de_7_dias_e_identificação_de_ondas_Brasil_picos__new_cases_por_data.png)
-
-### Média_móvel_e_picos_de_mortes_Brasil__new_deaths_por_data
-![Média_móvel_e_picos_de_mortes_Brasil__new_deaths_por_data](../charts/Média_móvel_e_picos_de_mortes_Brasil__new_deaths_por_data.png)
-
-### Pico_de_novos_casos_e_novas_mortes_no_Brasil__new_cases_por_data
-![Pico_de_novos_casos_e_novas_mortes_no_Brasil__new_cases_por_data](../charts/Pico_de_novos_casos_e_novas_mortes_no_Brasil__new_cases_por_data.png)
-
-### Pico_por_continente_agregado__pico_mm7_por_data
-![Pico_por_continente_agregado__pico_mm7_por_data](../charts/Pico_por_continente_agregado__pico_mm7_por_data.png)
-
-### Ranking_de_paises_por_continente__top15_country_region
-![Ranking_de_paises_por_continente__top15_country_region](../charts/Ranking_de_paises_por_continente__top15_country_region.png)
-
-### ranking_de_países_por_%_da_população_infectada__top15_pais
-![ranking_de_países_por_%_da_população_infectada__top15_pais](../charts/ranking_de_países_por_%_da_população_infectada__top15_pais.png)
-
-### Resumo_mensal_pico_da_média_móvel_em_cada_mês_Brasil__mm7_pico_mes_por_data
-![Resumo_mensal_pico_da_média_móvel_em_cada_mês_Brasil__mm7_pico_mes_por_data](../charts/Resumo_mensal_pico_da_média_móvel_em_cada_mês_Brasil__mm7_pico_mes_por_data.png)
-
-### tendencia_de_casos_e_mortes_no_Brasil__confirmed_por_data
-![tendencia_de_casos_e_mortes_no_Brasil__confirmed_por_data](../charts/tendencia_de_casos_e_mortes_no_Brasil__confirmed_por_data.png)
-
-### Timing_relativo_dias_até_o_primeiro_pico_após_100_casos__dias_ate_pico_pos_100_por_data
-![Timing_relativo_dias_até_o_primeiro_pico_após_100_casos__dias_ate_pico_pos_100_por_data](../charts/Timing_relativo_dias_até_o_primeiro_pico_após_100_casos__dias_ate_pico_pos_100_por_data.png)
-
-### top10_casos_por_milhao
-![top10_casos_por_milhao](../charts/top10_casos_por_milhao.png)
-
-### top10_mortes_por_milhao
-![top10_mortes_por_milhao](../charts/top10_mortes_por_milhao.png)
-
-### Top_10_em_casos_por_milhão__top15_country_region
-![Top_10_em_casos_por_milhão__top15_country_region](../charts/Top_10_em_casos_por_milhão__top15_country_region.png)
-
-### Top_10_em_mortes_por_milhão__top15_country_region
-![Top_10_em_mortes_por_milhão__top15_country_region](../charts/Top_10_em_mortes_por_milhão__top15_country_region.png)
-
-### Top_10_em_taxa_de_letalidade__top15_country_region
-![Top_10_em_taxa_de_letalidade__top15_country_region](../charts/Top_10_em_taxa_de_letalidade__top15_country_region.png)
-
-### Top_1_pico_de_média_móvel_de_casos_por_país__pico_mm7_casos_por_data
-![Top_1_pico_de_média_móvel_de_casos_por_país__pico_mm7_casos_por_data](../charts/Top_1_pico_de_média_móvel_de_casos_por_país__pico_mm7_casos_por_data.png)
-
-### Top_1_pico_de_média_móvel_de_mortes_por_país__pico_mm7_mortes_por_data
-![Top_1_pico_de_média_móvel_de_mortes_por_país__pico_mm7_mortes_por_data](../charts/Top_1_pico_de_média_móvel_de_mortes_por_país__pico_mm7_mortes_por_data.png)
